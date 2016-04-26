@@ -59,6 +59,15 @@ select 'Person # ' || e.EMPLOYEE_ID ||
 from EMPLOYEES e;
 
 
+
+select first_name||' '||last_name||' '||Employee_ID as Person_ID, commission_pct, 
+  CASE
+      when nvl(commission_pct,0) = 0 then 'NOT'
+    ELSE ('YES')
+  End as com_status
+from employees;
+
+
 /*9. List all "valuable" employees with one query. Employee is “valuable” if both conditions below are true for him: 
 a. He is hired before 2007; 
 b. He has salary from 7000 to 10000 or his JOB_ID starts with ‘IT’; 
@@ -90,16 +99,17 @@ having count(e.EMPLOYEE_ID) > 10 or sum(e.SALARY) > 30000;
 -- 13. Find average number of employees in department.
 
 select count(e.EMPLOYEE_ID)/count(distinct(e.DEPARTMENT_ID)) as AVG_Empl
-from EMPLOYEES e;
+from EMPLOYEES e
+where e.DEPARTMENT_ID is not null;
 
 -- hope this is THAT solution that you expect. Unfortunately, I haven`t found better way to solve the task.
 
 -- 14.  Show list of DEPARTMENT_IDs having at least one employee with salary > 8000. Show total salary for each such department. 
 
-select e.DEPARTMENT_ID,  sum (salary)
+select e.DEPARTMENT_ID,  sum (e.SALARY)
 from EMPLOYEES e
 group by e.DEPARTMENT_ID
-having max (salary) > 8000;
+having max (e.SALARY) > 8000;
 
 /*
 15. For each department in EMPLOYEES table calculate: 
